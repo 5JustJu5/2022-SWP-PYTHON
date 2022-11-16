@@ -181,25 +181,19 @@ def allocation(dicto,cards):
         return True
 
 
-def prop(dicto1,dicto2,range2):
+def prop(dicto1,range2):
+    dicto2 = {0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0}
     list2 = list(dicto1.values())
     for i in range(len(list2)):
         result = (list2[i]/range2)*100
+        result = f'{result:.5f}'
         dicto2.update({i:result})
     print(dicto2)
-
-
-
-
-
-
-
-    
+ 
 
 
 if __name__ == '__main__':
     dicto = {"Royal Flush":0,"Straight Flush":0,"Four of a Kind":0,"Full House":0,"Flush":0,"Straight":0,"Three of a Kind":0,"Two Pair":0,"Pair":0, "High Card":0}
-    dicto2 = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0}
     cards = pokerKarten(4)
     #listcards = deal_cards(cards)
     #print(street(listcards))
@@ -208,7 +202,7 @@ if __name__ == '__main__':
     for i in range(1000000):
         listcards = deal_cards(cards)
         allocation(dicto, listcards)
-    prop(dicto,dicto2,1000000)
+    prop(dicto,1000000)
     print(dicto)
 
    

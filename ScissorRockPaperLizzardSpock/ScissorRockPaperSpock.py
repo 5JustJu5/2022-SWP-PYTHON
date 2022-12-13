@@ -96,7 +96,7 @@ def reverseEvolution(player):
 
 
 def inputs(input1,switch, analyse, list):
-    com1 = smartCom(switch, analyse, list)
+    com1 = smartCom(switch, list)
     player1 = list[input1-1]
     if switch == 3:
         com1 = player1
@@ -139,7 +139,7 @@ def stats(player,com,winner):
     
 
 
-def analyse(switch, dicto,dictoPlayer):
+def analyse(switch):
     played = dicto.get(1) + dicto.get(2) + dicto.get(3)
     probPlayer = []
     probCom = []
@@ -153,23 +153,26 @@ def analyse(switch, dicto,dictoPlayer):
     
     if switch:
         print("Probability Player:")
-        print("| Schere: " + str(probPlayer[0]) + "| Stein: " + str(probPlayer[1]) + "| Papier: " + str(probPlayer[2]) + "| Echse: " + str(probPlayer[3]) + "| Spock: " + str(probPlayer[4]) + "\n")
+        print("| Schere: " + str(probPlayer[0]) + "| Stein: " + str(probPlayer[1]) +
+         "| Papier: " + str(probPlayer[2]) + "| Echse: " + str(probPlayer[3]) + "| Spock: " + 
+         str(probPlayer[4]) + "\n")
         print("Probability Computer:")
-        print("| Schere: " + str(probCom[0]) + "| Stein: " + str(probCom[1]) + "| Papier: " + str(probCom[2]) + "| Echse: " + str(probCom[3]) + "| Spock: " + str(probCom[4]) + "\n")
+        print("| Schere: " + str(probCom[0]) + "| Stein: " + str(probCom[1]) + 
+        "| Papier: " + str(probCom[2]) + "| Echse: " + str(probCom[3]) + 
+        "| Spock: " + str(probCom[4]) + "\n")
         print("Probability win:")
-        print("| Gewonnen: " + str(probWinP[0]) + "| Verloren: " + str(probWinP[1]) + "| Papier: " + str(probWinP[2]) + "\n")
+        print("| Gewonnen: " + str(probWinP[0]) + "| Verloren: "
+         + str(probWinP[1]) + "| Papier: " + str(probWinP[2]) + "\n")
 
     return probPlayer
 
-def smartCom(switch,ana,list):
-   
-
+def smartCom(switch,list):
     if switch == 1:
         com = random.randint(0,len(list)-1)
         com1 = list[com-1]
         return com1
     elif switch == 2:   
-        probPlayer = analyse(ana)
+        probPlayer = analyse(False)
         problist = []
         comList = []
 
@@ -179,7 +182,8 @@ def smartCom(switch,ana,list):
 
         for i in range(5):
             for y in range(problist[i]):
-                comList.append(i)
+               
+                comList.append(reverseEvolution(i))
 
         com = random.randint(0,len(comList)-1)
         com1 = comList[com-1]

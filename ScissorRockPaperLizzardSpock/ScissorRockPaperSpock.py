@@ -5,6 +5,9 @@ from tabulate import tabulate
 
 
 
+
+
+
 def format(answers,ans):
     com = ""
     if answers[0] == 0:
@@ -92,11 +95,9 @@ def reverseEvolution(player):
         return 2
 
 
-def inputs(switch, analyse, list):
+def inputs(input1,switch, analyse, list):
     com1 = smartCom(switch, analyse, list)
-    input1 = int(input("waehlen sie ihre Figur [1.Schere 2.Stein 3.Papier 4.Echse 5.Spock]"))
     player1 = list[input1-1]
-    print(player1)
     if switch == 3:
         com1 = player1
     if switch == 4:
@@ -138,7 +139,7 @@ def stats(player,com,winner):
     
 
 
-def analyse(switch):
+def analyse(switch, dicto,dictoPlayer):
     played = dicto.get(1) + dicto.get(2) + dicto.get(3)
     probPlayer = []
     probCom = []
@@ -183,19 +184,6 @@ def smartCom(switch,ana,list):
         com = random.randint(0,len(comList)-1)
         com1 = comList[com-1]
         return com1
-
-
-    
-    
-
-    #sorted_dicto = list(sorted(dictoPlayer.items(), key=lambda item:item[1], reverse=True))
-
-
-
-    #sorted_dicto = list(dictoPlayer.value)
-    #print(sorted_dicto)
-    
-
 
 #
 #
@@ -281,7 +269,19 @@ def insertIntoDicto(switch):
         records = cursor.fetchall()
 
         if switch:
+            listen = []
+            for row in records:
+                listen.append("ID: ")
+                listen.append(str(row[0]))
+                listen.append("player: ")
+                listen.append(str(row[1]))
+                listen.append("com: ")
+                listen.append(str(row[2]))
+                listen.append("winner: ")
+                listen.append(str(row[3]))
+                listen.append("|||||")
             print(tabulate(records, headers=["id","player","com","winner"]))
+            return str(listen)
         else:
             for row in records:
                 player = row[1]
@@ -298,24 +298,52 @@ def insertIntoDicto(switch):
 
 
 
+
+
 if __name__ == '__main__':
     #datBase()
     dictoPlayer = {0:0,1:0,2:0,3:0,4:0}
     dictoCom = {0:0,1:0,2:0,3:0,4:0}
     dicto = {1:0,2:0,3:0}
 
-    insertIntoDicto(True)
+    insertIntoDicto(False)
     print(dictoPlayer)
     print(dictoCom)
     print(dicto)
     print("\n")
 
-    while True:    
-        list = mode(True)
-        answers = inputs(4,False,list)
-        ans = evaluation(answers)
-        datas = format(answers,ans)
-        insertVaribleIntoTable(datas[0],datas[1],datas[2],answers[1],answers[0],ans)
+    exit = True
+
+    schwierigkeit = 1
+    while exit:
+        input2 = int(input("1. play 2. difficulty 3.Stats 6. Beenden"))
+        
+        while input2 == 1:
+            input1 = int(input("waehlen sie ihre Figur [1.Schere 2.Stein 3.Papier 4.Echse 5.Spock 6.Beenden]"))
+            if input1 == 6:
+                print("beendet")
+                input2 = "jjj"
+            else:
+                list = mode(True)
+                answers = inputs(input1,schwierigkeit,False,list)
+       
+                #print(answers)
+                ans = evaluation(answers)
+                datas = format(answers,ans)
+                insertVaribleIntoTable(datas[0],datas[1],datas[2],answers[1],answers[0],ans)
+
+        while input2 == 2:
+            schwierigkeit = int(input("1. Normal 2. Schwierig 3. Unentschieden 4.Unmöglich"))
+            input2 = "jjj"
+
+        if input2 == 3:
+            insertIntoDicto(True)
+            input2 = "jjj"
+        
+        if input2 == 6:
+            print("Beendet")
+            exit = False
+        
         
                
         

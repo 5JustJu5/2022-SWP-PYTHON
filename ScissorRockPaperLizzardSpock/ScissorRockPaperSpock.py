@@ -107,11 +107,6 @@ def inputs(input1,switch, analyse, list):
     return com1,player1
 
 def mode(sheldon):
-    #0 --> Schere
-    #1 --> Stein
-    #2 --> Papier
-    #3 --> Echse
-    #4 --> Spock
 
     list = []
     if sheldon:
@@ -219,11 +214,12 @@ def datBase():
     conn = sqlite3.connect('datas.db')
     print("Opened database successfully")
 
-    conn.execute('''CREATE TABLE usersInteger
+    conn.execute('''CREATE TABLE IF Not Exists usersInteger
             (ID INT PRIMARY KEY     NOT NULL,
             player           int    NOT NULL,
             com              int    NOT NULL,
-            winner           int     NOT NULL);''')
+            winner           int     NOT NULL,
+            updated          int     NOT NULL);''')
     print("Table created successfully")
 
 
@@ -247,9 +243,9 @@ def insertVaribleIntoTable(player, com, winner,player2,com2,winner2):
             id = records[len(records)-1][0]+1
 
         sqlite_insert_with_param = """INSERT INTO usersInteger
-                          (id, player, com, winner) 
-                          VALUES (?, ?, ?, ?);"""
-        data_tuple = (id, player2, com2, winner2)
+                          (id, player, com, winner, updated) 
+                          VALUES (?, ?, ?, ?, ?);"""
+        data_tuple = (id, player2, com2, winner2,0)
         cursor.execute(sqlite_insert_with_param, data_tuple)
         sqliteConnection.commit()
 
@@ -284,8 +280,8 @@ def insertIntoDicto(switch):
                 listen.append("winner: ")
                 listen.append(str(row[3]))
                 listen.append("|||||")
-            print(tabulate(records, headers=["id","player","com","winner"]))
-            return str(listen)
+            print(tabulate(records, headers=["id","player","com","winner","updated"]))
+            return records
         else:
             for row in records:
                 player = row[1]
@@ -300,12 +296,27 @@ def insertIntoDicto(switch):
         if sqliteConnection:
             sqliteConnection.close()
 
+def updateDatas():
+    try:
+        sqliteConnection = sqlite3.connect('datas.db')
+        cursor = sqliteConnection.cursor()
+        sql = "UPDATE usersInteger SET updated = 1"
+        cursor.execute(sql)
+        sqliteConnection.commit()        
+        cursor.close
+    except sqlite3.Error as error:
+        print("Failed to read data from sqlite table", error)
+    finally:
+        if sqliteConnection:
+            sqliteConnection.close()
+    
+
 
 
 
 
 if __name__ == '__main__':
-    #datBase()
+    datBase()
     dictoPlayer = {0:0,1:0,2:0,3:0,4:0}
     dictoCom = {0:0,1:0,2:0,3:0,4:0}
     dicto = {1:0,2:0,3:0}
@@ -316,11 +327,13 @@ if __name__ == '__main__':
     print(dicto)
     print("\n")
 
+
+
     exit = True
 
     schwierigkeit = 1
     while exit:
-        input2 = int(input("1. play 2. difficulty 3.Stats 6. Beenden"))
+        input2 = int(input("1. play 2. difficulty 3.Stats 4.upload 6. Beenden"))
         
         while input2 == 1:
             input1 = int(input("waehlen sie ihre Figur [1.Schere 2.Stein 3.Papier 4.Echse 5.Spock 6.Beenden]"))
@@ -328,7 +341,7 @@ if __name__ == '__main__':
                 print("beendet")
                 input2 = "jjj"
             else:
-                list = mode(True)
+                list = mode(input)
                 answers = inputs(input1,schwierigkeit,False,list)
        
                 #print(answers)
@@ -338,6 +351,10 @@ if __name__ == '__main__':
 
         while input2 == 2:
             schwierigkeit = int(input("1. Normal 2. Schwierig 3. Unentschieden 4.Unmöglich"))
+            input2 = "jjj"
+
+        if input2 == 4:
+            updateDatas()
             input2 = "jjj"
 
         if input2 == 3:

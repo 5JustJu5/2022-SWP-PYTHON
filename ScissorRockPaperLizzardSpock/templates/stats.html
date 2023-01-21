@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/stylesheetGame.css">
+    <title>Document</title>
+</head>
+<body>
+
+
+    
+    
+
+    <div class="center">
+
+        <p>Spiele Gewonnen</p>
+        <svg class = "right" id="statSvg" xmlns="http://www.w3.org/2000/svg" width="500" height="240">
+            <text x="10" y="50" font-size="12" font-family="Arial" fill="#404040">Spieler</text>
+            <rect x="50" y="35" width={{spieler}} height="20" rx="3" ry="3" fill="#2A7BB4" />
+            <text x="10" y="80" font-size="12" font-family="Arial" fill="#404040">COM</text>
+            <rect x="50" y="65" width={{com}} height="20" rx="3" ry="3" fill="#2A7BB4" />
+            <text x="10" y="110" font-size="12" font-family="Arial" fill="#404040">Unentschieden</text>
+            <rect x="50" y="95" width={{unen}} height="20" rx="3" ry ="3" fill="#B4472A" />
+        </svg>
+       
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="color: white;">ID</th>
+                    <th style="color: white;">PLAYER</th>
+                    <th style="color: white;">COM</th>
+                    <th style="color: white;">WINNER</th>
+                    <th style="color: white;">UPDATED</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for current in daten %}
+                <tr>
+                    <td style="color: white;">{{ current[0] }}</td>
+                    <td style="color: white;">{{ current[1] }}</td>
+                    <td style="color: white;">{{ current[2] }}</td>
+                    <td style="color: white;">{{ current[3] }}</td>
+                    <td style="color: white;">{{ current[4] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+   
+</body>
+</html>

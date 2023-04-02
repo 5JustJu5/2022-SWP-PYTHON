@@ -4,12 +4,36 @@ class ListElement:
         self.nextelement = None
         self.previuselement = None
 
+class Arraylist:
+    def __init__(self):
+        self.elements = []
+
+    def append(self, obj):
+        self.elements.append(obj)
+
+    def insertt(self, obj, pos):
+        self.elements.insert(pos, obj)
+
+    def delete(self,obj):
+        self.elements.remove(obj)
+
+    def index(self, obj):
+        return self.elements.index(obj)
+    
+    def pop(self, pos):
+        return self.elements.pop(pos)
+    
+    def sort(self, pos):
+        self.elements.sort()
+
 class DoublyLinkedList:
     def __init__(self):
+        self.arraylist = Arraylist()
         self.head = None
         self.tail = None
 
-    def insertAfter(self, obj):
+    def addAfter(self, obj):
+        self.arraylist.append(obj)
         new_node = ListElement(obj)
         if self.head is None:
             self.head = new_node
@@ -21,6 +45,7 @@ class DoublyLinkedList:
 
     def insert(self, obj, position):
         new_node = ListElement(obj)
+        self.arraylist.insertt(obj, position)
 
         if self.head is None:
             if position == 0:
@@ -49,6 +74,7 @@ class DoublyLinkedList:
         
 
     def delete(self, obj):
+        self.arraylist.delete(obj)
         current = self.head
         found = False
         while current is not None:
@@ -68,6 +94,7 @@ class DoublyLinkedList:
             print("Dieses Element existiert wurde nicht gefunden")
 
     def index(self, obj):
+        #print(self.arraylist.index(obj))
         current = self.head
         index = 0
 
@@ -79,7 +106,7 @@ class DoublyLinkedList:
 
     def pop(self, position):
         current = self.head
-
+        self.arraylist.pop(position)
         if position is None or position == 0:
             data = self.head.obj
             self.head = self.head.nextelement
@@ -144,8 +171,6 @@ class DoublyLinkedList:
         self.head = sorted_list.head
         self.tail = sorted_list.tail
 
-        
-
     def writeList(self):
         current = self.head
         while current is not None:
@@ -154,15 +179,15 @@ class DoublyLinkedList:
         print("None")
 
 dll = DoublyLinkedList()
-dll.insertAfter(100000)
-dll.insertAfter(3)
-dll.insertAfter(10)
-dll.insertAfter(10)
-dll.insertAfter(10)
-dll.writeList() 
+dll.addAfter(20)
 dll.insert(5,0)
 dll.insertion_sort()
 dll.insert(6,0)
-print(dll.index(5))
+dll.index(20)
+dll.pop(2)
+#dll.delete(20)
 dll.writeList() 
 dll.writeList() 
+print(dll.arraylist.elements)
+
+
